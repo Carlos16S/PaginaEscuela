@@ -151,8 +151,9 @@ class Service:
             instrumentos = self.cursor.fetchall()
             return instrumentos
         except Exception as e:
+            self.conn.rollback() 
             flash(f"No se pudo ejecutar tu consulta: {str(e)}", "error")
-            return []
+            return None
 
     def guardarComprobantes(self, comprobanteRuta, estudiante_id):
         if not comprobanteRuta:
