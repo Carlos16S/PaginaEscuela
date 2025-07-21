@@ -235,7 +235,181 @@ class Service:
         except Exception as e:
             flash(f"Error al guardar el comprobante en la base de datos: {str(e)}", "error")
             return False
-
+  
+    def obtenerUsuarioID(self, nombre, passw, correoE):
+     if not nombre and not passw and not correoE:
+         flash("Parámetros vacíos")
+ 
+     selectE = "SELECT id, rol FROM Estudiantes WHERE correo = %s AND contrasena = %s"
+     self.cursor.execute(selectE, (correoE, passw))
+     idEstudiante = self.cursor.fetchone()
+ 
+     selectP = "SELECT id, rol FROM Profesores WHERE nombre = %s AND contrasena = %s"
+     self.cursor.execute(selectP, (nombre, passw))
+     idProfesor = self.cursor.fetchone()
+ 
+     selectA = "SELECT id_Admin, rol FROM Administradores WHERE nombre = %s AND contrasena = %s"
+     self.cursor.execute(selectA, (nombre, passw))
+     idAdmin = self.cursor.fetchone()
+ 
+     if idEstudiante:
+         return idEstudiante[0], idEstudiante[1]
+     elif idProfesor:
+         return idProfesor[0], idProfesor[1]
+     elif idAdmin:
+         return idAdmin[0], idAdmin[1]
+ 
+    def definirCuposInstrumento(self, idInstrumento, cantidadCupos):
+        query = "UPDATE Instrumentos SET Cupos = %s WHERE id = %s"
+        self.cursor.execute(query, (cantidadCupos, idInstrumento))
+        self.conn.commit()
+    
+    def GetCuposInstrumentos(self, idInstrumento):
+        query = "SELECT Cupos FROM Instrumentos WHERE id = %s"
+        self.cursor.execute(query, (idInstrumento,))
+        CuposInstrumento = self.cursor.fetchone()
+        if CuposInstrumento:
+            return CuposInstrumento[0]
+        return 0
+    
+    def ObtenerComprobantes(self):
+        select = "SELECT id, comprobante, estudiante_id, fechaSubida, Revisado FROM Comprobantes"
+        self.cursor.execute(select)
+        consulta = self.cursor.fetchall()
+        return consulta
+    
+    def NombreUsuario(self, Usuario, passw):
+        selectE = "SELECT nombre FROM Estudiantes WHERE correo = %s AND contrasena = %s"
+        self.cursor.execute(selectE, (Usuario, passw))
+        NombreEstudiante = self.cursor.fetchone()
+    
+        selectP = "SELECT nombre FROM Profesores WHERE nombre = %s AND contrasena = %s"
+        self.cursor.execute(selectP, (Usuario, passw))
+        NombreProfesor = self.cursor.fetchone()
+    
+        selectA = "SELECT nombre FROM Administradores WHERE nombre = %s AND contrasena = %s"
+        self.cursor.execute(selectA, (Usuario, passw))
+        NombreAdmin = self.cursor.fetchone()
+    
+        if NombreEstudiante:
+            return NombreEstudiante[0]
+        elif NombreProfesor:
+            return NombreProfesor[0]
+        elif NombreAdmin:
+            return NombreAdmin[0]
+    
+    def obtenerestudiante(self, idEstudiante=None, correo=None):
+        if idEstudiante:
+            select = "SELECT nombre FROM Estudiantes WHERE id = %s"
+            self.cursor.execute(select, (idEstudiante,))
+        elif correo:
+            select = "SELECT nombre FROM Estudiantes WHERE correo = %s"
+            self.cursor.execute(select, (correo,))
+        else:
+            return None
+    
+        consulta = self.cursor.fetchone()
+        return consulta[0] if consulta else None
+    
+    def GetInstrumentoNombre(self, idInstrumento):
+        select = "SELECT nombre FROM Instrumentos WHERE id = %s"
+        self.cursor.execute(select, (idInstrumento,))
+        fila = self.cursor.fetchone()
+        if fila:
+            return fila[0]
+        else:
+            return None
+    
+    def UpdateInstrumentoID(self, user_id, instrumento_id):
+        try:
+            Update = "UPDATE Estudiantes SET id_instrumentoMatr = %s WHERE id = %s"
+            self.cursor.execute(Update, (instrumento_id, user_id))
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            flash(f"Error actualizando instrumento: {str(e)}", "error")
+    
+    def ObtenerInstrumentoMatri(self, idE):
+        select = "SELECT id_instrumentoMatr FROM Estudiantes WHERE id = %s"
+        self.cursor.execute(select, (idE,))
+        consulta = self.cursor.fetchone()
+        return consulta[0] if consulta else None
+    
+    def obtenerNumeroU(self, id):
+        select = "SELECT numeroTelefono FROM Estudiantes WHERE id = %s"
+        self.cursor.execute(select, (id,))
+        consulta = self.cursor.fetchone()
+        return consulta[0] if consulta else None
+    
+    def EstudianteMatriculado(self, id):
+        select = "SELECT id_instrumentoMatr FROM Estudiantes WHERE id = %s"
+        self.cursor.execute(select, (id,))
+        consulta = self.cursor.fetchone()
+        return consulta[0] if consulta else None
+    
+    @staticmethod
+    def validar_contrasena(password):
+      if len(password) < 8:
+          return "La contraseña debe tener al menos 8 caracteres"
+      if not re.search(r'[A-Z]', password):
+          return "Debe contener al menos una letra mayúscula"
+      if not re.search(r'[a-z]', password):
+          return "Debe contener al menos una letra minúscula"
+      if not re.search(r'\d', password):
+          return "Debe contener al menos un número"
+      if not re.search(r'[!@#$%^&*(),.?\":{}|<>]', password):
+          return "Debe contener al menos un carácter especial"
+      return None
+  
+    def ConsultaEstudiantes(self, idInstrumento):
+        idInstrumento_flat = [item[0] for item in idInstrumento]
+        placeholders = ', '.join(['%s'] * len(idInstrumento_flat))
+        select = f"SELECT id, nombre, numeroTelefono, Apellido FROM Estudiantes WHERE id_instrumentoMatr IN ({placeholders})"
+        self.cursor.execute(select, tuple(idInstrumento_flat))
+        consulta = self.cursor.fetchall()
+        return consulta
+    
+    def GetProfesorInstrumentos(self, idProfesor):
+        select = "SELECT instrumento_id FROM Instrumentos_Profesores WHERE profesor_id = %s"
+        self.cursor.execute(select, (idProfesor,))
+        resultado = self.cursor.fetchall()
+        return resultado if resultado else None
+    
+    def ElimiinarEstudiante(self, idEstudiante):
+        update = "UPDATE Estudiantes SET id_instrumentoMatr = NULL WHERE id = %s"
+        resultado = self.cursor.execute(update, (idEstudiante,))
+        self.conn.commit()
+        return resultado
+    
+    def elimnarComprobante(self, idComprobante):
+        delete = "DELETE FROM Comprobantes WHERE id = %s"
+        resultado = self.cursor.execute(delete, (idComprobante,))
+        self.conn.commit()
+        return resultado
+   
+    def VerificarCorreoUsuario(self, correoIngresado):
+          select = "SELECT correo FROM Estudiantes WHERE correo = %s"
+          self.cursor.execute(select, (correoIngresado,))
+          consulta = self.cursor.fetchone()
+          return consulta
+      
+    @staticmethod
+    def generar_codigo_aleatorio():
+          return str(random.randint(100000, 999999))
+      
+    def actualizar_contrasena_usuario(self, Pcorreo, Pcontrasena):
+          query = "UPDATE Estudiantes SET contrasena = %s WHERE correo = %s"
+          self.cursor.execute(query, (Pcontrasena, Pcorreo))
+          self.conn.commit()
+      
+    def actualizar_estado_revisado(self, idComprobante, estadoNuevo):
+          try:
+              query = "UPDATE Comprobantes SET Revisado = %s WHERE id = %s"
+              self.cursor.execute(query, (estadoNuevo, idComprobante))
+              self.conn.commit()
+          except Exception as e:
+            print(f"Error actualizando estado: {e}")
+    
     # Y así sucesivamente para todos los métodos...
 
 
