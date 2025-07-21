@@ -279,6 +279,7 @@ class Service:
         return consulta
     
     def NombreUsuario(self, Usuario, passw):
+     try:
         selectE = "SELECT nombre FROM Estudiantes WHERE correo = %s AND contrasena = %s"
         self.cursor.execute(selectE, (Usuario, passw))
         NombreEstudiante = self.cursor.fetchone()
@@ -297,6 +298,10 @@ class Service:
             return NombreProfesor[0]
         elif NombreAdmin:
             return NombreAdmin[0]
+     except Exception as e:
+        self.conn.rollback()  # Muy importante para salir del estado abortado
+        print("ERROR en NombreUsuario:", e)
+        return None
     
     def obtenerestudiante(self, idEstudiante=None, correo=None):
         if idEstudiante:
