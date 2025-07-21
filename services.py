@@ -169,73 +169,7 @@ class Service:
         
 
 
-    def GuardarUsuario(self, Estudiante):
-        if not Estudiante:
-            flash("Error: El usuario está vacío", "error")
-            return False  
-        try:
-            select = "SELECT * FROM Estudiantes WHERE correo = %s"
-            correoE = Estudiante["correo"]
-            self.cursor.execute(select, (correoE,))
-            resultado = self.cursor.fetchone()
-           
-            if not resultado:
-                self.cursor.execute(
-                    "INSERT INTO Estudiantes (nombre, correo, numeroTelefono, contrasena, Apellido) VALUES (%s, %s, %s, %s, %s)",
-                    (Estudiante["nombre"], Estudiante["correo"], Estudiante["numero"], Estudiante["contrasena"], Estudiante['apellido'])
-                )
-                self.conn.commit()
-                return True
-            else:
-                flash("Este correo electrónico ya ha sido utilizado", "error")
-                return False
-        except Exception as e:
-            flash(f"Error al guardar usuario: {str(e)}", "error")
-            return False
 
-    def validarUsuario(self, id, rol):
-        selectProfesores = "SELECT id FROM Profesores WHERE id = %s AND rol = %s"
-        self.cursor.execute(selectProfesores, (id, rol))
-        resultadoProfesor = self.cursor.fetchone()
-
-        selectEstudiante = "SELECT id FROM Estudiantes WHERE id = %s AND rol = %s"
-        self.cursor.execute(selectEstudiante, (id, rol))  
-        resultadoEstudiante = self.cursor.fetchone()
-
-        selectAdmin = "SELECT id_Admin FROM Administradores WHERE id_Admin = %s AND rol = %s"
-        self.cursor.execute(selectAdmin, (id, rol)) 
-        resultadoAdmin = self.cursor.fetchone()
-
-        if resultadoEstudiante: 
-            return "E"                     
-        elif resultadoAdmin:  
-            return "A"   
-        elif resultadoProfesor:  
-            return "P" 
-
-    # Más métodos adaptados igual:
-    def Selecionarinstrumentos(self):
-        try:       
-            self.cursor.execute("SELECT id, nombre FROM Instrumentos")
-            instrumentos = self.cursor.fetchall()
-            return instrumentos
-        except Exception as e:
-            flash(f"No se pudo ejecutar tu consulta: {str(e)}", "error")
-            return []
-
-    def guardarComprobantes(self, comprobanteRuta, estudiante_id):
-        if not comprobanteRuta:
-            flash("No se subió ninguna imagen")
-            return False
-        try:
-            insert = "INSERT INTO Comprobantes (comprobante, estudiante_id) VALUES (%s, %s)"
-            self.cursor.execute(insert, (comprobanteRuta, estudiante_id))
-            self.conn.commit()
-            return True
-        except Exception as e:
-            flash(f"Error al guardar el comprobante en la base de datos: {str(e)}", "error")
-            return False
-  
     def obtenerUsuarioID(self, nombre, passw, correoE):
      if not nombre and not passw and not correoE:
          flash("Parámetros vacíos")
