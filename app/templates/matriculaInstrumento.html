@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block title %}EMMUSA{% endblock %}
+
+{% block header %}
+           
+<h1>Escuela de Musica de Alvarado</h1>
+   
+     
+{% endblock %}
+
+{% block content %}
+ <h2>Seleccion de instrumento</h2>
+
+ <form action="/matriculaInstrumento" method="POST">
+    <label for="Selecciona-Instrumento">Selecciona un instrumento:</label>
+    <select name="InstrumentoID" id="Selecciona-Instrumento" required>
+        <option value="">Por favor escoge un instrumento</option>
+        {% for V in instrumentos %}
+            <option value="{{ V.id }}" {% if V.id == selected_instrumento_id %}selected{% endif %}> {{ V.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <p id="cupos-text">Cupos disponibles: -</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<br>
+
+        <button type="submit">Continuar</button>
+    
+<br>
+</form>
+
+    
+      <a href="{{ url_for('main.SeleccionCobro') }}">
+                
+        <button>Regresar al Inicio</button><br>
+                   
+        </a>
+
+        <script>
+          document.getElementById('Selecciona-Instrumento').addEventListener('change', function () {
+              const instrumentoId = this.value;
+              if (instrumentoId) {
+            fetch(`/obtener_cupos/${instrumentoId}`)
+        .then(response => response.json())
+        .then(data => {
+            const cuposText = document.getElementById('cupos-text');
+            if (data.cupos && data.cupos > 0) {
+                cuposText.textContent = `Cupos disponibles: ${data.cupos}`;
+            } else {
+                cuposText.textContent = 'No hay cupos disponibles';
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener los cupos:', error);
+        });
+} else {
+                  document.getElementById('cupos-text').textContent = "Cupos disponibles: -";
+              }
+          });
+          </script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Verificar Código - EMMUSA{% endblock %}
+
+{% block header %}
+<h2 class="text-center">Verificación de código</h2>
+{% endblock %}
+
+{% block content %}
+<div class="container" >
+    <form method="POST" action="{{ url_for('main.VerificarCodigo') }}">
+        
+        <input type="hidden" name="correo" value="{{ correo }}">
+
+        <div class="form-group">
+            <label for="codigo">Ingresa el código que recibiste en tu correo:</label>
+            <input type="text" name="codigo" id="codigo" class="form-control" required placeholder="Código de verificación" maxlength="6">
+        </div>
+
+        <div class="form-group mt-3 text-center">
+            <button type="submit" class="btn btn-success">Verificar código</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+         {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}EMMUSA{% endblock %}
+
+       {% block header %}
+           
+       <h1>Selección de cobro </h1>
+
+       <a  href="{{ url_for('main.cerrarSesion') }}">
+        <button class="EliminarBoton">Cerrar Sesión</button>
+      </a>
+          
+            
+       {% endblock %}
+
+       {% block content %}
+
+       <h2>Bienvenid@ {{ nombreU }}</h2> 
+        <h3>Que accion desea realizar?</h3>
+
+                
+       
+     {% if not EstudianteMatri %}
+    <a href="{{ url_for('main.matriculaInstrumento') }}">
+              <button>Matricular Instrumento</button>
+          </a><br>
+      {% endif %}
+      
+      {% if EstudianteMatri %}
+          <a href="{{ url_for('main.realizaPago') }}">
+              <button>Realizar pago mensual</button>
+          </a><br>
+      {% endif %}
+      
+    
+
+       {% endblock %}

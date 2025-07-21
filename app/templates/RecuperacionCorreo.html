@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Recuperar Cuenta - EMMUSA{% endblock %}
+
+{% block header %}
+<h1 >Recuperación de cuenta</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container" >
+    <form method="POST" action="{{ url_for('main.IntroducirCorreo') }}">
+        <div class="form-group">
+            <label for="correo">Ingresa tu correo electrónico:</label>
+            <input type="email" name="correo" id="correo" class="form-control" required placeholder="ejemplo@correo.com">
+        </div>
+
+        <div class="form-group mt-3 text-center">
+            <button type="submit" class="btn btn-primary">Enviar código de verificación</button>
+        </div>
+    </form>
+</div>
+     {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock %}

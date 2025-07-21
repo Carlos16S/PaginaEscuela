@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+
+{% block title %}EMMUSA{% endblock %}
+
+       {% block header %}
+           
+      <div class="logo-header">
+    <img src="{{ url_for('static', filename='imagenes/logo_escuela.jpeg') }}" alt="Logo" class="logo">
+    <h1>Bienvenido a la Escuela de Música de Alvarado</h1>
+  </div>
+          
+            
+       {% endblock %}
+
+        {% block content %}
+        <form action="{{ url_for('main.index') }}" method="POST">
+            <label for="email">Correo electrónico</label>
+            <input type="text" id="email" name="email" required>
+              <br>
+              <label for="Contraseña">Contraseña:</label>
+              <input type="password" id="contrasena" name="contrasena" required>
+
+              <button type="submit">Ingresar</button>
+        </form>
+<br>
+         <a href="{{ url_for('main.IntroducirCorreo') }}">
+              <button class="botoOlvidoContrasena">¿ Olvido su contraseña ?</button><br>
+                 
+        </a>
+        <br>
+        <p class="Notieneusuario">¿ No tiene usuario ? </p>
+         <br>
+
+            <a href="{{ url_for('main.crearUsuario') }}">
+              <button>Crear Usuario</button><br>
+                 
+        </a>
+
+
+          <br>
+       
+        
+             {% if mensaje %}
+                  <div style="color: red; font-weight: bold; text-align: center;">{{ mensaje }}</div>
+                    <br>      <p style="color: rgb(255, 0, 0); font-weight: bold; text-align: center;">(Si no tiene usuario, crear uno)</p>
+             {% endif %}
+
+
+
+      
+        {% endblock %}

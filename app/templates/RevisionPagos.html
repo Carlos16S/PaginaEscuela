@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}EMMUSA{% endblock %}
+
+{% block header %}
+
+    <h1>Revisión de Pagos</h1>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Lista de Comprobantes</h2>
+
+      {% if comprobantes %}
+       <form action="{{ url_for('main.actualizar_comprobantes') }}" method="post">
+            <table border="2",>
+    <thead >
+        <tr>
+            <th >Nombre del Estudiante</th>
+               <th>Instrumento</th>
+      
+            <th>Teléfono</th>
+            <th>Fecha de Carga </th>
+             <th>Comprobante</th>
+             <th> Comprobado </th>
+             <th> Eliminar Alumno  </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        
+        {% for item in comprobantes %}
+
+        <tr>
+             <td>{{ item.nombre_estudiante }}</td>
+
+             <td> {{ item.Instrumento_nombre }}</td>
+             <td>{{ item.usuariotelefono }}</td>
+             <td>{{ item.fecha }}</td>
+             
+            <td>
+                <a href="{{ url_for('static', filename=item.comprobante | replace('app/static/', '') ) }}" target="_blank">
+                    Ver comprobante
+                </a>
+            </td>
+           <td>
+           <input type="checkbox" name="revisados" value="{{ item.IDC }}" {% if item.Revisado %}checked{% endif %}>
+            </td>
+
+
+            <td>
+                <a href="{{ url_for('main.ElimnarComprobante', id=item.IDC) }}"
+                   onclick=" return alerta()"
+                   class="EliminarBoton">
+               
+                   Eliminar
+               </a> 
+                    
+              
+            </td>
+            
+          
+        </tr>
+        
+        {% endfor %}
+        
+    </tbody>
+     
+   </table>
+  <button type="submit">Guardar Cambios</button>
+</form>
+<script>
+function alerta() {
+
+  
+  return confirm("¿Estas seguro de eliminar este comprobante? \nEsta acción no se puede revertir");
+}
+</script>
+<br>
+   <a href="{{ url_for('main.cerrarSesion') }}">
+        <button  class="cerrarSesion">Cerrar Sesión</button>
+      </a>
+
+      
+
+
+
+
+
+
+
+    {% else %}
+
+        <p>No hay comprobantes disponibles.</p>
+
+    {% endif %}
+
+{% endblock %}

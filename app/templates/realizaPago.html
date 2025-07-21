@@ -1,0 +1,49 @@
+{% extends "base.html" %}{% block title %}EMMUSA{% endblock %}
+
+
+{% block header %}
+      <div>
+        <h1>Escuela de Musica de Alvarado</h1>
+        <img src="{{ url_for('static', filename='imagenes/logo_escuela.jpeg') }}" alt="Logo" class="logo"></div>     
+
+   
+     
+{% endblock %}
+
+{% block content %}
+ <h2>Subir Comprobante de Pago</h2>
+
+
+     
+     <form action="/realizaPago" method="POST" enctype="multipart/form-data">
+        <label for="imagen">Seleccione la imagen del comprobante :</label>
+        <input type="file" id="imagen" name="imagen" accept="image/*">
+        <br><br>
+        <button type="submit">Subir Imagen</button>
+    </form>
+
+ {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert {{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+    {% if nombreInstrumento %}
+    <p>Se matriculará en = {{ nombreInstrumento }}</p><br>
+    {% endif %}
+
+      <a href="{{ url_for('main.SeleccionCobro') }}">
+                
+        <button>Regresar al Inicio</button><br>
+                   
+        </a>
+
+
+ 
+
+
+{% endblock %}

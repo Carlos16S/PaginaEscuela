@@ -1,0 +1,318 @@
+
+from app.Modelos import modeloEstudiante as estudiante
+from flask import flash
+from config import db
+import re
+import random
+import pyodbc
+
+class Service:  
+
+    
+   
+    def __init__(self):
+      self.conn = db.conn
+      self.cursor = self.conn.cursor()
+     
+    def GuardarUsuario(self,Estudiante):  
+         if not Estudiante : 
+            flash("Error: El usuario esta vacio", "error")
+            return False  
+         try: 
+            select="SELECT * from Estudiantes WHERE correo= ? "  
+            correoE= Estudiante["correo"]
+            self.cursor.execute(select, (correoE,))
+            resultado = self.cursor.fetchone()
+           
+            if not resultado:
+
+             self.cursor.execute("INSERT INTO Estudiantes (nombre, correo, numeroTelefono, contrasena, Apellido) values(?,?,?,?,?)",
+                             (Estudiante["nombre"], Estudiante["correo"], Estudiante["numero"], Estudiante["contrasena"],Estudiante['apellido']))     
+             self.conn.commit()
+             return True
+            else:
+               flash(f"Este correo electronico ya ha sido utilizado {str(e)}", "error")
+               return False
+
+         except Exception as e:
+           flash(f"Error al guardar usuario: ", "error")
+           return False  # Hubo un error
+    
+
+    def  validarUsuario(self,id,rol):
+   
+
+               #Se consulta al Profesor 
+           selectProfesores="SELECT id FROM Profesores WHERE id=? AND rol=?"
+           self.cursor.execute(selectProfesores, (id,rol))
+           resultadoProfesor = self.cursor.fetchone()
+
+            #Consultamos al estudiante
+           selectEstudiante = "SELECT id FROM Estudiantes WHERE id= ? AND rol=?"
+           self.cursor.execute(selectEstudiante, (id,rol))  
+           resultadoEstudiante = self.cursor.fetchone()
+            #Se consulta al Administrador 
+           selectAdmin="SELECT id_Admin FROM Administradores WHERE id_Admin=? AND rol=?"
+           self.cursor.execute(selectAdmin, (id,rol)) 
+           resultadoAdmin=self.cursor.fetchone()
+          
+
+           if resultadoEstudiante : 
+            return "E" 
+                         
+           elif resultadoAdmin :  
+            return "A"   
+   
+           elif resultadoProfesor :  
+             return "P" 
+
+
+
+  
+        
+    def Selecionarinstrumentos(self):
+        try:       
+            self.cursor.execute("SELECT id,nombre FROM Instrumentos")
+            instrumentos = self.cursor.fetchall()
+          
+            return instrumentos
+        except Exception as e:
+            flash(f"No se pudo ejecutar tu consulta: {str(e)}", "error")
+            return []
+       
+    def guardarComprobantes(self, comprobanteRuta, estudiante_id):
+       if not comprobanteRuta:
+          flash("No se subio ninguna imagen")
+          
+       else:
+        try:
+         Insert="Insert into  Comprobantes (comprobante, estudiante_id) values (?,?)"
+         self.cursor.execute(Insert,(comprobanteRuta,estudiante_id))
+         self.cursor.commit()
+         return True
+        except Exception as e:
+            flash(f"Error al guardar el comprobante en la base de datos: {str(e)}", "error")
+            return False
+          
+    def obtenerUsuarioID(self,nombre,passw,correoE):
+      
+       if not nombre and not passw and not correoE:
+          flash("Parametros vacios")
+
+       
+       selectE="SELECT id, rol FROM Estudiantes WHERE correo=? AND contrasena=?" 
+       self.cursor.execute(selectE,(correoE,passw))  
+       idEstudiante = self.cursor.fetchone()
+
+       selectP="SELECT id, rol FROM Profesores WHERE nombre=? AND contrasena=?"
+       self.cursor.execute(selectP,(nombre,passw))  
+       idProfesor = self.cursor.fetchone()
+
+       selectA="SELECT id_Admin, rol FROM Administradores  WHERE nombre=? AND contrasena=?"
+       self.cursor.execute(selectA,(nombre,passw))  
+       idAdmin= self.cursor.fetchone() 
+
+       
+       if idEstudiante :
+          return idEstudiante[0], idEstudiante[1]
+       elif idProfesor :
+          return idProfesor[0], idProfesor[1]
+       elif idAdmin:
+          return idAdmin[0],idAdmin[1]
+   
+        
+
+        
+    def definirCuposInstrumento(self,idInstrumento, cantidadCupos):
+         query = "UPDATE Instrumentos SET Cupos = ? WHERE id = ?"
+         self.cursor.execute(query, (cantidadCupos, idInstrumento))
+         self.conn.commit()
+   
+    def GetCuposInstrumentos(self,idInstrumento):
+       query= "SELECT Cupos from Instrumentos WHERE id=?"
+
+       self.cursor.execute(query,(idInstrumento))
+       CuposInstrumento = self.cursor.fetchone()
+       if CuposInstrumento:
+          return CuposInstrumento[0]  
+       return 0
+    
+    def ObtenerComprobantes(self):
+       select="SELECT id,comprobante,estudiante_id,fechaSubida,Revisado FROM Comprobantes"
+       self.cursor.execute(select)
+       consulta= self.cursor.fetchall()
+    
+       return consulta
+    
+
+
+    def NombreUsuario(self,Usuario,passw):
+       selectE="SELECT nombre FROM Estudiantes WHERE correo=? AND contrasena=?" 
+       self.cursor.execute(selectE,(Usuario,passw))  
+       NombreEstudiante = self.cursor.fetchone()
+
+       selectP="SELECT nombre FROM Profesores WHERE nombre=? AND contrasena=?"
+       self.cursor.execute(selectP,(Usuario,passw))  
+       NombreProfesor = self.cursor.fetchone()
+
+       selectA="SELECT nombre FROM Administradores  WHERE nombre=? AND contrasena=?"
+       self.cursor.execute(selectA,(Usuario,passw))  
+       NombreAdmin= self.cursor.fetchone() 
+
+       if NombreEstudiante :
+        return NombreEstudiante[0]
+       elif NombreProfesor :
+        return NombreProfesor[0]
+       elif NombreAdmin:
+        return NombreAdmin[0]
+       
+    def obtenerestudiante(self, idEstudiante=None, correo=None):
+     if idEstudiante:
+         select = "SELECT nombre FROM Estudiantes WHERE id = ?"
+         self.cursor.execute(select, (idEstudiante,))
+         
+     elif correo:
+         select = "SELECT nombre FROM Estudiantes WHERE correo = ?"
+         self.cursor.execute(select, (correo,))
+     else:
+        return None  # Ni ID ni correo fueron proporcionados
+
+     consulta = self.cursor.fetchone()
+     return consulta[0] if consulta else None
+       
+    def GetInstrumentoNombre(self, idInstrumento):
+      select = "SELECT nombre FROM Instrumentos WHERE id = ?"
+      self.cursor.execute(select, (idInstrumento,))
+      fila = self.cursor.fetchone()
+      
+      if fila:
+          return fila[0]
+      else:
+          return None
+
+   
+    def UpdateInstrumentoID(self, user_id, instrumento_id):
+     try:
+        
+         Update = "UPDATE Estudiantes SET id_instrumentoMatr = ? WHERE id = ?"
+         self.cursor.execute(Update, (instrumento_id, user_id))
+         self.cursor.commit()
+     except Exception as e:
+         
+         self.cursor.rollback()
+
+    def ObtenerInstrumentoMatri(self,idE):
+       select="Select id_instrumentoMatr from Estudiantes WHERE id = ?"
+       self.cursor.execute(select, (idE,))
+       consulta= self.cursor.fetchone()
+
+       return consulta[0]
+    
+    def obtenerNumeroU(self,id):
+       select="Select numeroTelefono from Estudiantes WHERE id = ?"
+       self.cursor.execute(select, (id,))
+       consulta= self.cursor.fetchone()
+
+       return consulta[0]
+    
+    def EstudianteMatriculado(self, id):
+       select="Select id_instrumentoMatr FROM Estudiantes WHERE id =?"
+       self.cursor.execute(select,(id,))
+       consulta=self.cursor.fetchone()
+
+       return consulta[0]
+    
+    @staticmethod
+    def validar_contrasena(password):
+      if len(password) < 8:
+          return "La contraseña debe tener al menos 8 caracteres"
+      if not re.search(r'[A-Z]', password):
+          return "Debe contener al menos una letra mayúscula"
+      if not re.search(r'[a-z]', password):
+          return "Debe contener al menos una letra minúscula"
+      if not re.search(r'\d', password):
+          return "Debe contener al menos un número"
+      if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+          return "Debe contener al menos un carácter especial"
+      return None
+    
+    def  ConsultaEstudiantes(self,idInstrumento):
+       idInstrumento_flat = [item[0] for item in idInstrumento]
+       placeholders = ', '.join(['?'] * len(idInstrumento_flat))
+       select = f"SELECT id, nombre, numeroTelefono, Apellido FROM Estudiantes WHERE id_instrumentoMatr IN ({placeholders })"
+       self.cursor.execute(select,tuple(idInstrumento_flat))
+       consulta=self.cursor.fetchall()
+       return consulta
+
+    
+    def GetProfesorInstrumentos(self, idProfesor):
+     select = "SELECT Instrumento_id FROM Instrumentos_Profesores WHERE profesor_id=?"
+     self.cursor.execute(select, (idProfesor,))
+     resultado = self.cursor.fetchall()
+     if resultado:
+         
+         return resultado
+     return None
+    
+    def  ElimiinarEstudiante(self,idEstudiante):
+     
+       update="UPDATE Estudiantes set id_instrumentoMatr =? WHERE id=?"
+       VariableNull=None
+       resultado= self.cursor.execute(update,(VariableNull,idEstudiante,))
+       self.cursor.commit()
+       return resultado
+    
+    def  elimnarComprobante(self,idComprobante):
+     
+       select="DELETE  from Comprobantes WHERE id =?"
+       resultado= self.cursor.execute(select,(idComprobante,))
+       self.cursor.commit()
+       return resultado
+    
+    def VerificarCorreoUsuario(self,correoIngresado):
+        select="Select correo FROM Estudiantes WHERE correo= ?"
+        self.cursor.execute(select,(correoIngresado,))
+        consulta=self.cursor.fetchone()
+        return consulta
+        
+        
+    @staticmethod   
+    def generar_codigo_aleatorio():
+        return str(random.randint(100000, 999999))
+        
+        
+     
+        
+     
+     
+    def actualizar_contrasena_usuario(self,Pcorreo,Pcontrasena):
+        
+        query="UPDATE Estudiantes set contrasena=? WHERE correo=?"
+        self.cursor.execute(query,(Pcontrasena,Pcorreo))
+        self.conn.commit()
+
+    def actualizar_estado_revisado(self,idComprobante,estadoNuevo):
+         try:
+          query = "UPDATE Comprobantes SET Revisado = ? WHERE id = ?"
+          self.cursor.execute(query, (estadoNuevo, idComprobante))
+          self.conn.commit()
+         except Exception as e:
+          print(f"Error actualizando estado: {e}")
+ 
+    
+
+
+
+
+       
+
+ 
+     
+         
+                            
+                        
+       
+        
+
+
+

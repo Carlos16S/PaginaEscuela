@@ -1,0 +1,571 @@
+/* RESET MEJORADO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+/* VARIABLES DE COLOR (manteniendo tu paleta) */
+:root {
+    --primary-color: #2f4858;
+    --secondary-color: #4cb5ae;
+    --accent-color: #379d97;
+    --light-bg: #fdfdfd;
+    --text-color: #413838;
+    --white: #fff;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* ANIMACIONES GLOBALES */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* BODY CON EFECTO MUSICAL */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    line-height: 1.6;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(76, 181, 174, 0.05) 0%, transparent 10%),
+        radial-gradient(circle at 90% 80%, rgba(0, 139, 226, 0.05) 0%, transparent 10%);
+}
+
+/* HEADER / FOOTER CON EFECTOS MUSICALES */
+header, footer {
+   
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 25px 0;
+    width: 100%;
+    position: reltive;
+    overflow: hidden;
+    gap: 100px;
+}
+
+header::before, footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7px;
+    background: linear-gradient(90deg, var(--secondary-color), #0b0c44, #501009, var(--secondary-color));
+    background-size: 400% 400%;
+    animation: gradientBG 8s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+header h1, footer p{
+    margin: 0;
+    font-weight: 600;
+    animation: fadeIn 1s ease-out;
+}
+
+header a 
+{
+   margin: 100;
+
+}
+
+
+
+
+
+/* LOGO CON EFECTO */
+.logo {
+    height: 100px;
+    width: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(196, 196, 196, 0.2));
+}
+
+.logo:hover {
+    transform: rotate(-5deg) scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(231, 226, 226, 0.3));
+}
+
+/* MAIN CON ANIMACIÓN */
+main {
+    width: 100%;
+    max-width: 860px;
+    margin: 30px auto;
+    background-color: var(--white);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+    transition: transform 0.3s ease;
+    background-color: #c4c4c4;
+}
+
+
+
+/* TITULOS MUSICALES */
+h2 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+/* FORMULARIOS INTERACTIVOS */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+form label {
+    font-weight: 500;
+    width: 100%;
+    max-width: 500px;
+    text-align: left;
+    color: #444;
+    transition: all 0.3s ease;
+}
+
+form label:hover {
+    color: var(--primary-color);
+    transform: translateX(5px);
+}
+.labeLCreaUsuario{
+
+color: #ffffff;
+
+}
+
+form input,
+form select,
+form button {
+    padding: 12px;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 181, 174, 0.2);
+    transform: scale(1.01);
+}
+
+/* SUBIR COMPROBANTE MEJORADO */
+input[type="file"] {
+    border: 2px dashed #aaa;
+    text-align: center;
+    background-color: #fcfcfc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+    border-color: var(--secondary-color);
+    background-color: rgba(76, 181, 174, 0.05);
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* BOTONES CON EFECTO DE PULSO */
+button {
+    background-color: var(--secondary-color);
+    color: rgb(0, 0, 0);
+    border: none;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: var(--accent-color);
+    transform: none; /* Se quita el movimiento */
+    box-shadow: none; /* Se elimina la sombra */
+}
+
+button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+button:focus:not(:active)::after {
+    animation: none; /* Se elimina la animación */
+}
+
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+/* TABLAS CON EFECTO DE HOVER */
+table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0,0,0,0.03);
+    animation: fadeIn 0.8s ease-out;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+th {
+    background-color: var(--secondary-color);
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+tr:hover td {
+    background-color: rgba(76, 181, 174, 0.05);
+    transform: translateX(5px);
+}
+
+/* FLASH MESSAGES ANIMADOS */
+.alert {
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 15px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out, slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(20px); }
+    to { transform: translateX(0); }
+}
+
+.alert-success {
+    background-color: #e0f7f5;
+    color: #00796b;
+    border-left: 5px solid #00796b;
+}
+
+.alert-error {
+    background-color: #fbe9e7;
+    color: #c62828;
+    border-left: 5px solid #c62828;
+}
+
+/* ELEMENTOS MUSICALES */
+#cupos-text,
+ul li,
+p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    background-color: #f0f5f7;
+    padding: 10px;
+    border-left: 5px solid var(--secondary-color);
+    border-radius: 5px;
+    margin-top: 20px;
+  
+}
+
+ul li:hover, p:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* EFECTO DE NOTAS MUSICALES */
+.music-note {
+    position: absolute;
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: floatNote 4s linear infinite;
+}
+
+@keyframes floatNote {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* RESPONSIVE MEJORADO */
+@media (max-width: 600px) {
+    main {
+        padding: 20px;
+        animation: none;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    td {
+        margin-bottom: 12px;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: calc(50% - 20px);
+        padding-right: 10px;
+        font-weight: bold;
+        text-align: left;
+        color: var(--primary-color);
+    }
+
+    th {
+        display: none;
+    }
+}
+
+/* SECCIÓN DE PROFESORES MEJORADA */
+.p-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.p-row p {
+    background-color: #fcefe6;
+    border-left: 5px solid #362313;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+    color: #070d0f;
+    text-align:justify;
+    min-width: 200px;
+    transition: all 0.3s ease;
+   
+}
+
+
+
+/* EFECTO DE ONDAS MUSICALES */
+.wave {
+    position: relative;
+}
+
+.wave::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%232f4858" opacity=".25"/></svg>');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* TOOLTIPS PARA ELEMENTOS MUSICALES */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+[data-tooltip]:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.cerrarSesion{
+    color: #000000;
+    background-color: #c62828;
+    
+
+}
+.cerrarSesion:hover{
+
+    color: #f1f1f1;
+    background-color: #c62828;
+
+}
+
+
+.password-requirements ul {
+  display: flex;
+  gap: 10px; /* Espacio entre los <li> */
+  padding: 0;
+  margin: 0;
+  list-style: none; /* Opcional: quita los puntitos */
+}
+
+.password-requirements li {
+  background-color: #ffffff; /* Opcional: para visualizar mejor */
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.Notieneusuario{
+
+ color: #000000; /* Color del texto en negro */
+            border: none; /* Sin bordes */
+            font-size: 16px; /* Tamaño del texto (ajustable) */
+            background: fixed;
+            transition: none;
+            box-shadow: none;
+            padding: none;
+    
+          
+
+
+}
+
+.tamanoFacebook{
+    
+   width: 25px;  /* Ancho deseado */
+    height: 25px; /* Alto deseado (opcional) */
+  position: absolute;
+    object-fit: contain; /* Mantiene la proporción si pones ambas medidas */
+}
+
+
+.tamanoFacebook:hover{
+
+  
+  transform: scale(1.1);
+
+  
+}
+
+.EliminarBoton {
+    padding: 8px 16px;
+    background-color: #c62828;  /* Rojo fuerte */
+    color: #ffffff;             /* Texto blanco */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.EliminarBoton:hover {
+    background-color: #b71c1c;  /* Rojo más oscuro al pasar el mouse */
+}
+.botoOlvidoContrasena{
+
+    background-color: var(--white);
+    color: rgb(0, 0, 0);
+    border: none;
+    font-weight: bold;
+    padding: 6px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+
+}
+.botoOlvidoContrasena:hover{
+    background-color: grey;
+    transform: none; /* Se quita el movimiento */
+    box-shadow: none; /* Se elimina la sombra */
+
+
+}

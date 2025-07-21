@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}EMMUSA{% endblock %}
+
+       {% block header %}
+      
+       <h2>Bienvenid@ {{ nombreU }}</h2> 
+            
+       {% endblock %}
+
+       {% block content %}
+       <H2>Ingrese la cantidad de cupos que impartira</H2>
+    
+       <form action="{{ url_for('main.DefinirCupos') }}" method="POST">
+        
+        <br><br>
+    
+        <label for="Selecciona-Instrumento">Selecciona un instrumento:</label>
+        <select name="InstrumentoID" id="Selecciona-Instrumento">
+            <option value="">Por favor escoge un instrumento</option>
+            {% for V in instrumentos %}
+                <option value="{{ V.id }}">{{ V.nombre }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <label for="Cupos">Cupos:</label>
+        <input type="number" id="Cupos" name="Cupos" min="0" step="1" required placeholder="Ingresa un número">
+       <p id="cupos-text">Cupos Actuales: -</p>
+        <button type="submit">Confirmar</button>
+    </form>
+ <br>
+       <a href="{{ url_for('main.Consulta_alumnos') }}">
+                
+        <button>Consultar Estudiantes</button><br>
+                   
+        </a>
+    <br>
+
+       <a  href="{{ url_for('main.cerrarSesion') }}">
+        <button class="EliminarBoton">Cerrar Sesión</button>
+      </a>
+      <script>
+          document.getElementById('Selecciona-Instrumento').addEventListener('change', function () {
+              const instrumentoId = this.value;
+              if (instrumentoId) {
+            fetch(`/obtener_cupos/${instrumentoId}`)
+        .then(response => response.json())
+        .then(data => {
+            const cuposText = document.getElementById('cupos-text');
+            if (data.cupos && data.cupos > 0) {
+                cuposText.textContent = `Cupos Actuales: ${data.cupos}`;
+            } else {
+                cuposText.textContent = 'Sin cupos disponibles';
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener los cupos:', error);
+        });
+} else {
+                  document.getElementById('cupos-text').textContent = "Cupos disponibles: -";
+              }
+          });
+          </script>
+
+
+   
+    
+
+       {% endblock %}

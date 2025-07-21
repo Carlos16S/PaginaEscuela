@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Contraseña - EMMUSA{% endblock %}
+
+{% block header %}
+<h2 class="text-center">Establecer nueva contraseña</h2>
+{% endblock %}
+
+{% block content %}
+<div class="container" >
+    <form method="POST" action="{{ url_for('main.CrearNuevaContrasena') }}">
+        
+        <input type="hidden" name="correo" value="{{ correo }}">
+
+        <div class="form-group">
+            <label for="contrasena">Nueva contraseña:</label>
+            <input type="password" name="contrasena" id="contrasena" class="form-control" required minlength="8" >
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="confirmar_contrasena">Confirmar contraseña:</label>
+            <input type="password" name="confirmar_contrasena" id="confirmar_contrasena" class="form-control" required minlength="8" placeholder="Confirma tu contraseña">
+        </div>
+        <div class="password-requirements">
+                <ul id="requirements-list">
+                    <li id="length">Debe tener al menos 8 caracteres</li>
+                    <li id="uppercase">Debe contener al menos una letra mayúscula</li>
+                    <li id="lowercase">Debe contener al menos una letra minúscula</li>
+                    <li id="number">Debe contener al menos un número</li>
+                    <li id="special">Debe contener al menos un carácter especial (ej. @, #, $, etc.)</li>
+               </ul>
+          </div>
+
+        <div class="form-group mt-4 text-center">
+            <button type="submit" class="btn btn-primary">Guardar nueva contraseña</button>
+        </div>
+    </form>
+
+
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div style="color: red;" class="alert alert-{{ 'danger' if category == 'error' else category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock %}

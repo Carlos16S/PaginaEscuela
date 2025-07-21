@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi Página{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        {% block header %}
+          
+            
+            {% endblock %} 
+    </header>
+    <main>
+        {% block content %}
+      
+        {% endblock %}
+    </main>
+    <footer>
+        {% block footer %}
+
+       
+
+
+<div class="p-row">
+      <p>© 2025 Escuela Municipal Musica Alvarado. Todos los derechos reservados  </p>
+        <p>Contacto: 2534-0378</p>
+        <p>Redes Sociales:   
+
+            <a  href="https://www.facebook.com/alvarado.musica"> 
+                 <img   class="tamanoFacebook" src="{{ url_for('static', filename='imagenes/Facebook_logo.png') }}" alt="Facebook"> 
+           </a>  
+       </p>
+</div>
+
+        
+
+        {% endblock %}
+        
+    </footer>
+</body>
+</html>

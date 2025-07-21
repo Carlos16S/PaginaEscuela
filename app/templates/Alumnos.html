@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+
+{% block title %}EMMUSA{% endblock %}
+
+       {% block header %}
+           
+       <h1>Listado de alumnos de {{ UsuarioNombre }}</h1>
+          
+            
+       {% endblock %}
+
+        {% block content %}
+       
+  <table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Teléfono</th>
+            <th>Eliminar Estudiante</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in EstudiantesMatriculado %}
+<tr>
+     <td>{{ item.id }}</td>
+     <td>{{ item.nombre }}</td>
+     <td>{{ item.Apellido }}</td>
+     <td>{{ item.numeroTelefono }}</td>
+     <td>
+         
+              <a href="{{ url_for('main.eliminarEstudiante', id=item.id) }}"
+              onclick=" return alerta()"
+               class="EliminarBoton">Eliminar</a>
+
+                
+                    
+                
+              
+            
+        
+         
+     </td>
+</tr>
+
+
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+function alerta() {
+
+  
+  return confirm("¿Estas seguro de eliminar este estudiante? \nEsta acción no se puede revertir");
+}
+</script>
+
+
+
+<a href="{{ url_for('main.regresarProfesor') }}">
+        <button class="cerrarSesion">Regresar</button>
+      </a>
+    
+
+
+
+
+
+
+      
+
+
+
+
+
+       
+        
+             {% if mensaje %}
+                 
+             {% endif %}
+
+
+
+      
+        {% endblock %}

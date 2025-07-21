@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+
+{% block title %}EMMUSA{% endblock %}
+
+       {% block header %}
+           
+       <h1 > Escuela de Musica de Alvarado</h1>
+          <div class="header a">
+        <a href="{{ url_for('main.cerrarSesion') }}">
+            <button class="cerrarSesion">Salir</button>
+        </a>
+    </div>
+            
+       {% endblock %}
+
+        {% block content %}
+        <h1>Crear Usuario</h1>
+        <form action="{{ url_for('main.crearUsuario') }}" method="POST">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="nombre" name="nombre" value="{{ nombre or '' }}"  required>
+            <br>
+
+            <label for="Apellidos">Apellidos:</label>
+            <input type="text" id="apellido" name="apellido" value="{{ apellidos or '' }}"  required>
+
+            <br>
+              <label for="telefono">Teléfono:</label>
+              <input type="tel" id="telefono" name="telefono" value="{{ telefono or '' }}" required  maxlength="8">
+              <br>
+              <label for="correo">Correo:</label>
+              <input type="email" id="correo" name="correo" required placeholder="ejemplo@correo.com" value="{{ correo or '' }}">
+             <br>
+              <label  for="contraseña">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+            <span class="labeLCreaUsuario" title="Requisitos de la contraseña">
+                <p>Requisitos de la contraseña:</p>
+            </span>
+
+            <div class="password-requirements">
+                <ul id="requirements-list">
+                    <li id="length">Debe tener al menos 8 caracteres</li>
+                    <li id="uppercase">Debe contener al menos una letra mayúscula</li>
+                    <li id="lowercase">Debe contener al menos una letra minúscula</li>
+                    <li id="number">Debe contener al menos un número</li>
+                    <li id="special">Debe contener al menos un carácter especial (ej. @, #, $, etc.)</li>
+               </ul>
+          </div>
+              <br>
+              
+                <br>
+
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div style="color: red;" class="alert alert-{{ 'danger' if category == 'error' else category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+             
+      <br>
+              <button type="submit">Crear Usuario</button>
+          </form>
+        {% endblock %}
