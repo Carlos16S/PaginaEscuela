@@ -105,14 +105,14 @@ class Service:
             flash("Error: El usuario está vacío", "error")
             return False  
         try:
-            select = "SELECT * FROM Estudiantes WHERE correo = %s"
+            select = "SELECT * FROM estudiantes WHERE correo = %s"
             correoE = Estudiante["correo"]
             self.cursor.execute(select, (correoE,))
             resultado = self.cursor.fetchone()
            
             if not resultado:
                 self.cursor.execute(
-                    "INSERT INTO Estudiantes (nombre, correo, numeroTelefono, contrasena, Apellido) VALUES (%s, %s, %s, %s, %s)",
+                    "INSERT INTO estudiantes (nombre, correo, numeroTelefono, contrasena, Apellido) VALUES (%s, %s, %s, %s, %s)",
                     (Estudiante["nombre"], Estudiante["correo"], Estudiante["numero"], Estudiante["contrasena"], Estudiante['apellido'])
                 )
                 self.conn.commit()
@@ -125,15 +125,15 @@ class Service:
             return False
 
     def validarUsuario(self, id, rol):
-        selectProfesores = "SELECT id FROM Profesores WHERE id = %s AND rol = %s"
+        selectProfesores = "SELECT id FROM profesores WHERE id = %s AND rol = %s"
         self.cursor.execute(selectProfesores, (id, rol))
         resultadoProfesor = self.cursor.fetchone()
 
-        selectEstudiante = "SELECT id FROM Estudiantes WHERE id = %s AND rol = %s"
+        selectEstudiante = "SELECT id FROM estudiantes WHERE id = %s AND rol = %s"
         self.cursor.execute(selectEstudiante, (id, rol))  
         resultadoEstudiante = self.cursor.fetchone()
 
-        selectAdmin = "SELECT id_Admin FROM Administradores WHERE id_Admin = %s AND rol = %s"
+        selectAdmin = "SELECT id_Admin FROM administradores WHERE id_Admin = %s AND rol = %s"
         self.cursor.execute(selectAdmin, (id, rol)) 
         resultadoAdmin = self.cursor.fetchone()
 
@@ -147,7 +147,7 @@ class Service:
     # Más métodos adaptados igual:
     def Selecionarinstrumentos(self):
         try:       
-            self.cursor.execute("SELECT id, nombre FROM Instrumentos")
+            self.cursor.execute("SELECT id, nombre FROM instrumentos")
             instrumentos = self.cursor.fetchall()
             return instrumentos
         except Exception as e:
@@ -160,7 +160,7 @@ class Service:
             flash("No se subió ninguna imagen")
             return False
         try:
-            insert = "INSERT INTO Comprobantes (comprobante, estudiante_id) VALUES (%s, %s)"
+            insert = "INSERT INTO comprobantes (comprobante, estudiante_id) VALUES (%s, %s)"
             self.cursor.execute(insert, (comprobanteRuta, estudiante_id))
             self.conn.commit()
             return True
@@ -175,15 +175,15 @@ class Service:
      if not nombre and not passw and not correoE:
          flash("Parámetros vacíos")
  
-     selectE = "SELECT id, rol FROM Estudiantes WHERE correo = %s AND contrasena = %s"
+     selectE = "SELECT id, rol FROM estudiantes WHERE correo = %s AND contrasena = %s"
      self.cursor.execute(selectE, (correoE, passw))
      idEstudiante = self.cursor.fetchone()
  
-     selectP = "SELECT id, rol FROM Profesores WHERE nombre = %s AND contrasena = %s"
+     selectP = "SELECT id, rol FROM profesores WHERE nombre = %s AND contrasena = %s"
      self.cursor.execute(selectP, (nombre, passw))
      idProfesor = self.cursor.fetchone()
  
-     selectA = "SELECT id_Admin, rol FROM Administradores WHERE nombre = %s AND contrasena = %s"
+     selectA = "SELECT id_Admin, rol FROM administradores WHERE nombre = %s AND contrasena = %s"
      self.cursor.execute(selectA, (nombre, passw))
      idAdmin = self.cursor.fetchone()
  
@@ -195,12 +195,12 @@ class Service:
          return idAdmin[0], idAdmin[1]
  
     def definirCuposInstrumento(self, idInstrumento, cantidadCupos):
-        query = "UPDATE Instrumentos SET Cupos = %s WHERE id = %s"
+        query = "UPDATE instrumentos SET Cupos = %s WHERE id = %s"
         self.cursor.execute(query, (cantidadCupos, idInstrumento))
         self.conn.commit()
     
     def GetCuposInstrumentos(self, idInstrumento):
-        query = "SELECT Cupos FROM Instrumentos WHERE id = %s"
+        query = "SELECT Cupos FROM instrumentos WHERE id = %s"
         self.cursor.execute(query, (idInstrumento,))
         CuposInstrumento = self.cursor.fetchone()
         if CuposInstrumento:
@@ -208,22 +208,22 @@ class Service:
         return 0
     
     def ObtenerComprobantes(self):
-        select = "SELECT id, comprobante, estudiante_id, fechaSubida, Revisado FROM Comprobantes"
+        select = "SELECT id, comprobante, estudiante_id, fechaSubida, Revisado FROM comprobantes"
         self.cursor.execute(select)
         consulta = self.cursor.fetchall()
         return consulta
     
     def NombreUsuario(self, Usuario, passw):
      try:
-        selectE = "SELECT nombre FROM Estudiantes WHERE correo = %s AND contrasena = %s"
+        selectE = "SELECT nombre FROM estudiantes WHERE correo = %s AND contrasena = %s"
         self.cursor.execute(selectE, (Usuario, passw))
         NombreEstudiante = self.cursor.fetchone()
     
-        selectP = "SELECT nombre FROM Profesores WHERE nombre = %s AND contrasena = %s"
+        selectP = "SELECT nombre FROM profesores WHERE nombre = %s AND contrasena = %s"
         self.cursor.execute(selectP, (Usuario, passw))
         NombreProfesor = self.cursor.fetchone()
     
-        selectA = "SELECT nombre FROM Administradores WHERE nombre = %s AND contrasena = %s"
+        selectA = "SELECT nombre FROM administradores WHERE nombre = %s AND contrasena = %s"
         self.cursor.execute(selectA, (Usuario, passw))
         NombreAdmin = self.cursor.fetchone()
     
@@ -240,10 +240,10 @@ class Service:
     
     def obtenerestudiante(self, idEstudiante=None, correo=None):
         if idEstudiante:
-            select = "SELECT nombre FROM Estudiantes WHERE id = %s"
+            select = "SELECT nombre FROM estudiantes WHERE id = %s"
             self.cursor.execute(select, (idEstudiante,))
         elif correo:
-            select = "SELECT nombre FROM Estudiantes WHERE correo = %s"
+            select = "SELECT nombre FROM estudiantes WHERE correo = %s"
             self.cursor.execute(select, (correo,))
         else:
             return None
@@ -252,7 +252,7 @@ class Service:
         return consulta[0] if consulta else None
     
     def GetInstrumentoNombre(self, idInstrumento):
-        select = "SELECT nombre FROM Instrumentos WHERE id = %s"
+        select = "SELECT nombre FROM instrumentos WHERE id = %s"
         self.cursor.execute(select, (idInstrumento,))
         fila = self.cursor.fetchone()
         if fila:
@@ -262,7 +262,7 @@ class Service:
     
     def UpdateInstrumentoID(self, user_id, instrumento_id):
         try:
-            Update = "UPDATE Estudiantes SET id_instrumentoMatr = %s WHERE id = %s"
+            Update = "UPDATE estudiantes SET id_instrumentoMatr = %s WHERE id = %s"
             self.cursor.execute(Update, (instrumento_id, user_id))
             self.conn.commit()
         except Exception as e:
@@ -270,19 +270,19 @@ class Service:
             flash(f"Error actualizando instrumento: {str(e)}", "error")
     
     def ObtenerInstrumentoMatri(self, idE):
-        select = "SELECT id_instrumentoMatr FROM Estudiantes WHERE id = %s"
+        select = "SELECT id_instrumentoMatr FROM estudiantes WHERE id = %s"
         self.cursor.execute(select, (idE,))
         consulta = self.cursor.fetchone()
         return consulta[0] if consulta else None
     
     def obtenerNumeroU(self, id):
-        select = "SELECT numeroTelefono FROM Estudiantes WHERE id = %s"
+        select = "SELECT numeroTelefono FROM estudiantes WHERE id = %s"
         self.cursor.execute(select, (id,))
         consulta = self.cursor.fetchone()
         return consulta[0] if consulta else None
     
     def EstudianteMatriculado(self, id):
-        select = "SELECT id_instrumentoMatr FROM Estudiantes WHERE id = %s"
+        select = "SELECT id_instrumentoMatr FROM estudiantes WHERE id = %s"
         self.cursor.execute(select, (id,))
         consulta = self.cursor.fetchone()
         return consulta[0] if consulta else None
@@ -304,31 +304,31 @@ class Service:
     def ConsultaEstudiantes(self, idInstrumento):
         idInstrumento_flat = [item[0] for item in idInstrumento]
         placeholders = ', '.join(['%s'] * len(idInstrumento_flat))
-        select = f"SELECT id, nombre, numeroTelefono, Apellido FROM Estudiantes WHERE id_instrumentoMatr IN ({placeholders})"
+        select = f"SELECT id, nombre, numeroTelefono, Apellido FROM estudiantes WHERE id_instrumentoMatr IN ({placeholders})"
         self.cursor.execute(select, tuple(idInstrumento_flat))
         consulta = self.cursor.fetchall()
         return consulta
     
     def GetProfesorInstrumentos(self, idProfesor):
-        select = "SELECT instrumento_id FROM Instrumentos_Profesores WHERE profesor_id = %s"
+        select = "SELECT instrumento_id FROM instrumentos_profesores WHERE profesor_id = %s"
         self.cursor.execute(select, (idProfesor,))
         resultado = self.cursor.fetchall()
         return resultado if resultado else None
     
     def ElimiinarEstudiante(self, idEstudiante):
-        update = "UPDATE Estudiantes SET id_instrumentoMatr = NULL WHERE id = %s"
+        update = "UPDATE estudiantes SET id_instrumentoMatr = NULL WHERE id = %s"
         resultado = self.cursor.execute(update, (idEstudiante,))
         self.conn.commit()
         return resultado
     
     def elimnarComprobante(self, idComprobante):
-        delete = "DELETE FROM Comprobantes WHERE id = %s"
+        delete = "DELETE FROM comprobantes WHERE id = %s"
         resultado = self.cursor.execute(delete, (idComprobante,))
         self.conn.commit()
         return resultado
    
     def VerificarCorreoUsuario(self, correoIngresado):
-          select = "SELECT correo FROM Estudiantes WHERE correo = %s"
+          select = "SELECT correo FROM estudiantes WHERE correo = %s"
           self.cursor.execute(select, (correoIngresado,))
           consulta = self.cursor.fetchone()
           return consulta
@@ -338,13 +338,13 @@ class Service:
           return str(random.randint(100000, 999999))
       
     def actualizar_contrasena_usuario(self, Pcorreo, Pcontrasena):
-          query = "UPDATE Estudiantes SET contrasena = %s WHERE correo = %s"
+          query = "UPDATE estudiantes SET contrasena = %s WHERE correo = %s"
           self.cursor.execute(query, (Pcontrasena, Pcorreo))
           self.conn.commit()
       
     def actualizar_estado_revisado(self, idComprobante, estadoNuevo):
           try:
-              query = "UPDATE Comprobantes SET Revisado = %s WHERE id = %s"
+              query = "UPDATE comprobantes SET Revisado = %s WHERE id = %s"
               self.cursor.execute(query, (estadoNuevo, idComprobante))
               self.conn.commit()
           except Exception as e:
