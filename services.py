@@ -148,7 +148,8 @@ class Service:
     def Selecionarinstrumentos(self):
         try:       
             self.cursor.execute("SELECT id, nombre FROM instrumentos")
-            instrumentos = self.cursor.fetchall()
+            resultados = self.cursor.fetchall()
+            instrumentos = [{"id": row[0], "nombre": row[1]} for row in resultados]
             return instrumentos
         except Exception as e:
             self.conn.rollback() 
