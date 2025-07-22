@@ -304,8 +304,10 @@ class Service:
   
     def ConsultaEstudiantes(self, idInstrumento):
         idInstrumento_flat = [item[0] for item in idInstrumento]
+        if not idInstrumento_flat:
+         return []
         placeholders = ', '.join(['%s'] * len(idInstrumento_flat))
-        select = f"SELECT id, nombre, numeroTelefono, Apellido FROM estudiantes WHERE id_instrumentoMatr IN ({placeholders})"
+        select = f"SELECT id, nombre, numeroTelefono, Apellido FROM estudiantes WHERE id_instrumentomatr IN ({placeholders})"
         self.cursor.execute(select, tuple(idInstrumento_flat))
         consulta = self.cursor.fetchall()
         return consulta
