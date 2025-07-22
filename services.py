@@ -153,7 +153,7 @@ class Service:
         except Exception as e:
             self.conn.rollback() 
             flash(f"No se pudo ejecutar tu consulta: {str(e)}", "error")
-            return None
+            return []
 
     def guardarComprobantes(self, comprobanteRuta, estudiante_id):
         if not comprobanteRuta:
