@@ -31,7 +31,7 @@
      <td>{{ item.numeroTelefono }}</td>
      <td>
          
-              <a href="{{ url_for('main.eliminarEstudiante', id=item.id) }}"
+              <a href="{{ url_for('main.eliminarEstudiante', id=item[0]) }}"
               onclick=" return alerta()"
                class="EliminarBoton">Eliminar</a>
 
