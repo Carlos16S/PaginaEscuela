@@ -25,10 +25,10 @@
     <tbody>
         {% for item in EstudiantesMatriculado %}
 <tr>
-     <td>{{ item.id }}</td>
-     <td>{{ item.nombre }}</td>
-     <td>{{ item.apellido }}</td>
-     <td>{{ item.numeroTelefono }}</td>
+     <td>{{ item[0] }}</td>
+     <td>{{ item[1] }}</td>
+     <td>{{ item[3] }}</td>
+     <td>{{ item[2] }}</td>
      <td>
          
               <a href="{{ url_for('main.eliminarEstudiante', id=item[0]) }}"
