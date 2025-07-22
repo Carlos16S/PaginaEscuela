@@ -145,7 +145,7 @@ def realizaPago():
 def matriculaInstrumento():
     Cupos = None  
     instrumentos = sv.Selecionarinstrumentos()
- 
+    print("Instrumentos cargados:", instrumentos)
    
     if request.method == 'POST':
          instrumento_id = request.form.get('InstrumentoID')
