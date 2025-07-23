@@ -220,7 +220,7 @@ def actualizar_comprobantes():
     for item in sv.ObtenerComprobantes(): 
         id=item[0] # Suponiendo que esta función te da todos los comprobantes
         item_id = str(id)
-        nuevo_estado = 1 if item_id in ids_revisados else 0
+        nuevo_estado = True if item_id in ids_revisados else False
         sv.actualizar_estado_revisado(id, nuevo_estado)  # Función que actualiza en la BD
 
     return redirect(url_for('main.Pagos_Revisar'))

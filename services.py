@@ -347,11 +347,12 @@ class Service:
       
     def actualizar_estado_revisado(self, idComprobante, estadoNuevo):
           try:
-              query = "UPDATE comprobantes SET Revisado = %s WHERE id = %s"
+              query = "UPDATE comprobantes SET revisado = %s WHERE id = %s"
               self.cursor.execute(query, (estadoNuevo, idComprobante))
               self.conn.commit()
           except Exception as e:
-            print(f"Error actualizando estado: {e}")
+            self.conn.rollback()
+            flash(f"Error actualizando estado: {e}")
     
     # Y así sucesivamente para todos los métodos...
 
