@@ -11,7 +11,8 @@
     <form method="POST" action="{{ url_for('main.VerificarCodigo') }}">
         
         <input type="hidden" name="correo" value="{{ correo }}">
-
+        <p>Hemos enviado un código al correo {{% correo %}}
+        </p>
         <div class="form-group">
             <label for="codigo">Ingresa el código que recibiste en tu correo:</label>
             <input type="text" name="codigo" id="codigo" class="form-control" required placeholder="Código de verificación" maxlength="6">

@@ -263,6 +263,7 @@ def IntroducirCorreo():
     elif request.method=='POST':
 
         correo = request.form['correo']
+        session['correo']=correo
         print("Correo del formulario= " ,correo)
         CorreoUser=sv.VerificarCorreoUsuario(correo)
 
@@ -283,8 +284,8 @@ def IntroducirCorreo():
 @main.route('/VerificarCodigo',methods=['POST', 'GET'])
 def VerificarCodigo():
   if request.method=='GET':
-   
-   return render_template('VerificacionCodigo.html')
+   CorrreoUser=session.get('correo')
+   return render_template('VerificacionCodigo.html',correo=CorrreoUser)
   
   elif request.method =='POST':
   
