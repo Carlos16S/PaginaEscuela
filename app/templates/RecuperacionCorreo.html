@@ -4,6 +4,9 @@
 
 {% block header %}
 <h1 >Recuperación de cuenta</h1>
+ <a href="{{ url_for('main.cerrarSesion') }}">
+            <button class="cerrarSesion">Salir</button>
+        </a>
 {% endblock %}
 
 {% block content %}

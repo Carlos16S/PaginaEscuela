@@ -551,6 +551,7 @@ ul li:hover, p:hover {
 .botoOlvidoContrasena{
 
     background-color: var(--white);
+    background-color: grey;
     color: rgb(0, 0, 0);
     border: none;
     font-weight: bold;
@@ -563,7 +564,7 @@ ul li:hover, p:hover {
 
 }
 .botoOlvidoContrasena:hover{
-    background-color: grey;
+    background-color: rgb(83, 82, 82);
     transform: none; /* Se quita el movimiento */
     box-shadow: none; /* Se elimina la sombra */
 

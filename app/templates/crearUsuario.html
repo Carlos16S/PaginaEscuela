@@ -7,9 +7,7 @@
            
        <h1 > Escuela de Musica de Alvarado</h1>
           <div class="header a">
-        <a href="{{ url_for('main.cerrarSesion') }}">
-            <button class="cerrarSesion">Salir</button>
-        </a>
+      
     </div>
             
        {% endblock %}
@@ -33,6 +31,8 @@
              <br>
               <label  for="contraseña">Contraseña:</label>
             <input type="password" id="contrasena" name="contrasena" required>
+            <input type="checkbox" id="mostrarContrasena" onclick="toggleContrasena()">
+            <label for="mostrarContrasena">Mostrar contraseña</label>
             <span class="labeLCreaUsuario" title="Requisitos de la contraseña">
                 <p>Requisitos de la contraseña:</p>
             </span>
@@ -61,8 +61,20 @@
   {% endif %}
 {% endwith %}
 
-             
+            <script>
+function toggleContrasena() {
+  const input = document.getElementById("contrasena");
+  if (input.type === "password") {
+    input.type = "text";
+  } else {
+    input.type = "password";
+  }
+}
+</script> 
       <br>
               <button type="submit">Crear Usuario</button>
           </form>
+            <a href="{{ url_for('main.cerrarSesion') }}">
+            <button class="cerrarSesion">Salir</button>
+        </a>
         {% endblock %}
