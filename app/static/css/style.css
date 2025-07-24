@@ -551,7 +551,7 @@ ul li:hover, p:hover {
 .botoOlvidoContrasena{
 
     background-color: var(--white);
-    background-color: grey;
+    background-color: rgb(138, 137, 137);
     color: rgb(0, 0, 0);
     border: none;
     font-weight: bold;
