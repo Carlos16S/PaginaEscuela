@@ -4,6 +4,7 @@ import app
 from correoPass import ServicioCorreo
 from services import Service 
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 main = Blueprint('main', __name__)  
 
@@ -14,10 +15,10 @@ ce=ServicioCorreo()
 def index():
     
       if request.method == 'POST':
-        Usuario=request.form['email']   
+        correo=request.form['email']   
         contrasena=request.form['contrasena']
-        nombre=sv.NombreUsuario(Usuario=Usuario,passw=contrasena)
-        idUsuario=sv.obtenerUsuarioID(nombre,contrasena,correoE=Usuario)
+        nombre=sv.NombreUsuario(Usuario=correo,passw=contrasena)
+        idUsuario=sv.obtenerUsuarioID(nombre,contrasena,correoE=correo)
         if idUsuario:
           instrumento=sv.Selecionarinstrumentos()
           session['nombreU']=nombre
@@ -36,8 +37,8 @@ def index():
           elif validacionUsuario=="A":
                return redirect(url_for('main.Pagos_Revisar'))
           else:
-               mensaje="Usuario o contraseña incorrectos"
-               return render_template('index.html', mensaje=mensaje)
+               
+               return render_template('index.html')
         else: 
             mensaje="Usuario o contraseña incorrectos"
             return render_template('index.html', mensaje=mensaje)
@@ -87,7 +88,8 @@ def crearUsuario():
                flash(contasenaValida,'error')
                return render_template('crearUsuario.html',nombre=datos_usuario['nombre'],apellidos=datos_usuario['apellido'],telefono=datos_usuario['numero'],correo=datos_usuario['correo'])
            else:
-
+             contrasenaSegura=generate_password_hash(datos_usuario['contrasena'])
+             datos_usuario['contrasena']=contrasenaSegura
              usuarioGuardado=sv.GuardarUsuario(datos_usuario)
              if usuarioGuardado:
               return render_template('index.html')
