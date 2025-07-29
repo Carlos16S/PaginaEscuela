@@ -18,15 +18,18 @@ def index():
         correo=request.form['email']   #AdMINPrueba
         contrasena=request.form['contrasena'] #123
         nombre=sv.NombreUsuario(Usuario=correo,passw=contrasena)
+        print(nombre)
         idUsuario=sv.obtenerUsuarioID(nombre,contrasena,correoE=correo)
+
+        print(idUsuario)
         if idUsuario:
           instrumento=sv.Selecionarinstrumentos()
           session['nombreU']=nombre
           session['IdU']=idUsuario[0]
           rolUsuario=idUsuario[1]
-          
+          print(idUsuario)
           validacionUsuario=sv.validarUsuario(idUsuario[0],idUsuario[1]) #Se valida el usuario
-         
+          print(validacionUsuario)
           if validacionUsuario=="E": 
               
                EstudianteMatri=sv.EstudianteMatriculado(session.get('IdU'))
