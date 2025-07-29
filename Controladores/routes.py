@@ -15,8 +15,8 @@ ce=ServicioCorreo()
 def index():
     
       if request.method == 'POST':
-        correo=request.form['email']   
-        contrasena=request.form['contrasena']
+        correo=request.form['email']   #AdMINPrueba
+        contrasena=request.form['contrasena'] #123
         nombre=sv.NombreUsuario(Usuario=correo,passw=contrasena)
         idUsuario=sv.obtenerUsuarioID(nombre,contrasena,correoE=correo)
         if idUsuario:

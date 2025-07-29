@@ -126,28 +126,7 @@ class Service:
 
 
 
-    def obtenerUsuarioID(self, nombre, passw, correoE):
-     if not nombre and not passw and not correoE:
-         flash("Parámetros vacíos")
- 
-     selectE = "SELECT id, rol FROM estudiantes WHERE correo = %s AND contrasena = %s"
-     self.cursor.execute(selectE, (correoE, passw))
-     idEstudiante = self.cursor.fetchone()
- 
-     selectP = "SELECT id, rol FROM profesores WHERE nombre = %s AND contrasena = %s"
-     self.cursor.execute(selectP, (nombre, passw))
-     idProfesor = self.cursor.fetchone()
- 
-     selectA = "SELECT id_Admin, rol FROM administradores WHERE nombre = %s AND contrasena = %s"
-     self.cursor.execute(selectA, (nombre, passw))
-     idAdmin = self.cursor.fetchone()
- 
-     if idEstudiante:
-         return idEstudiante[0], idEstudiante[1]
-     elif idProfesor:
-         return idProfesor[0], idProfesor[1]
-     elif idAdmin:
-         return idAdmin[0], idAdmin[1]
+    
  
     def definirCuposInstrumento(self, idInstrumento, cantidadCupos):
         query = "UPDATE instrumentos SET Cupos = %s WHERE id = %s"
