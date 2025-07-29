@@ -313,6 +313,7 @@ def CrearNuevaContrasena():
        else:
         sv.actualizar_contrasena_usuario(correo, contrasena)
         flash("Contraseña actualizada correctamente.")
+        session.clear()
         return redirect(url_for('main.index'))
     
     
