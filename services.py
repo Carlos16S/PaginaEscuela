@@ -76,15 +76,15 @@ class Service:
   
 
               #Se consulta al Profesor 
-          selectProfesores="SELECT id FROM Profesores WHERE id=? AND rol=?"
+          selectProfesores="SELECT id FROM Profesores WHERE id=%s AND rol=%s"
           self.cursor.execute(selectProfesores, (id,rol))
           resultadoProfesor = self.cursor.fetchone()
            #Consultamos al estudiante
-          selectEstudiante = "SELECT id FROM Estudiantes WHERE id= ? AND rol=?"
+          selectEstudiante = "SELECT id FROM Estudiantes WHERE id= %s AND rol=%s"
           self.cursor.execute(selectEstudiante, (id,rol))  
           resultadoEstudiante = self.cursor.fetchone()
            #Se consulta al Administrador 
-          selectAdmin="SELECT id_Admin FROM Administradores WHERE id_Admin=? AND rol=?"
+          selectAdmin="SELECT id_Admin FROM Administradores WHERE id_Admin=%s AND rol=%s"
           self.cursor.execute(selectAdmin, (id,rol)) 
           resultadoAdmin=self.cursor.fetchone()
          
