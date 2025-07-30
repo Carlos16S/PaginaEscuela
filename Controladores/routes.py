@@ -16,7 +16,9 @@ def index():
     
       if request.method == 'POST':
         correo=request.form['email']   #AdMINPrueba
+        print(correo)
         contrasena=request.form['contrasena'] #123
+        print(contrasena)
         nombre=sv.NombreUsuario(Usuario=correo,passw=contrasena)
         print(nombre)
         idUsuario=sv.obtenerUsuarioID(nombre,contrasena,correoE=correo)
