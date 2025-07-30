@@ -77,9 +77,7 @@ function alerta() {
 }
 </script>
 <br>
-   <a href="{{ url_for('main.cerrarSesion') }}">
-        <button  class="cerrarSesion">Cerrar Sesión</button>
-      </a>
+   
 
       
 
@@ -94,5 +92,8 @@ function alerta() {
         <p>No hay comprobantes disponibles.</p>
 
     {% endif %}
+     <a href="{{ url_for('main.cerrarSesion') }}">
+        <button  class="cerrarSesion">Cerrar Sesión</button>
+      </a>
 
 {% endblock %}

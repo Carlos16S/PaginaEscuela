@@ -313,17 +313,20 @@ def CrearNuevaContrasena():
    
    elif request.method =='POST':
        contrasena = request.form['contrasena']
+       confirmarContrasena=request.form['confirmar_contrasena']
        correo=session.get('correo')
        contasenaValida=sv.validar_contrasena(contrasena)
        if  contasenaValida:
         flash(contasenaValida,'error')
        else:
-        sv.actualizar_contrasena_usuario(correo, contrasena)
-        flash("Contraseña actualizada correctamente.")
-        session.clear()
-        return redirect(url_for('main.index'))
-    
-    
+        if contrasena ==confirmarContrasena:
+          sv.actualizar_contrasena_usuario(correo, contrasena)
+          flash("Contraseña actualizada correctamente.")
+          session.clear()
+          return redirect(url_for('main.index'))
+        else:
+            flash("Las contraseñas no coinciden")     
+        
    return render_template('/ConfirmarContra.html')
 
 

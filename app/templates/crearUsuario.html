@@ -30,8 +30,11 @@
               <input type="email" id="correo" name="correo" required placeholder="ejemplo@correo.com" value="{{ correo or '' }}">
              <br>
               <label  for="contraseña">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena" required>
-            <label for="mostrarContrasena">Mostrar contraseña</label><input type="checkbox" id="mostrarContrasena" onclick="toggleContrasena()">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="password" id="contrasena" name="contrasena" required>
+              <label for="mostrarContrasena">Mostrar contraseña</label>
+              <input type="checkbox" id="mostrarContrasena" onclick="toggleContrasena()">
+            </div>
         
             <span class="labeLCreaUsuario" title="Requisitos de la contraseña">
                 <p>Requisitos de la contraseña:</p>
