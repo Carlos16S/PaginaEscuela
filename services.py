@@ -180,7 +180,7 @@ class Service:
                     return nombreA
 
            
-            return None
+          
 
         except Exception as e:
             self.conn.rollback()  
