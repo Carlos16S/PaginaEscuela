@@ -320,7 +320,8 @@ def CrearNuevaContrasena():
         flash(contasenaValida,'error')
        else:
         if contrasena ==confirmarContrasena:
-          sv.actualizar_contrasena_usuario(correo, contrasena)
+          contrasenaSegura=generate_password_hash(contrasena)
+          sv.actualizar_contrasena_usuario(correo, contrasenaSegura)
           flash("Contraseña actualizada correctamente.")
           session.clear()
           return redirect(url_for('main.index'))
