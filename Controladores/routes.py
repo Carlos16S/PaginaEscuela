@@ -321,6 +321,7 @@ def CrearNuevaContrasena():
        else:
         if contrasena ==confirmarContrasena:
           contrasenaSegura=generate_password_hash(contrasena)
+          print("Contrasena con HASH",contrasenaSegura)
           sv.actualizar_contrasena_usuario(correo, contrasenaSegura)
           flash("Contraseña actualizada correctamente.")
           session.clear()
