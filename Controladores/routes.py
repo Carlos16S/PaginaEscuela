@@ -20,7 +20,6 @@ def index():
         contrasena=request.form['contrasena'] #123
         print(contrasena)
         nombre=sv.NombreUsuario(Usuario=correo,passw=contrasena)
-        print(nombre)
         idUsuario=sv.obtenerUsuarioID(nombre,contrasena,correoE=correo)
 
         print(idUsuario)
@@ -29,12 +28,12 @@ def index():
           session['nombreU']=nombre
           session['IdU']=idUsuario[0]
           rolUsuario=idUsuario[1]
-          print(idUsuario)
+          print("ID Usuario: " + str(idUsuario[0]))
           validacionUsuario=sv.validarUsuario(idUsuario[0],idUsuario[1]) #Se valida el usuario
           print(validacionUsuario)
           if validacionUsuario=="E": 
               
-               EstudianteMatri=sv.EstudianteMatriculado(session.get('IdU'))
+               EstudianteMatri=sv.EstudianteMatriculado(idUsuario[0])
                return render_template('SeleccionCobro.html',nombreU=nombre,EstudianteMatri=EstudianteMatri)  
           elif validacionUsuario=="P":
               
